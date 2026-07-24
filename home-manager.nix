@@ -9,7 +9,7 @@
     # User specific packages
     home.packages = (with pkgs; [
       dconf-editor
-      #enpass
+      enpass
       gimp
       gnome-system-monitor
       gnome-tweaks
@@ -25,12 +25,25 @@
       compiz-alike-magic-lamp-effect
       compiz-windows-effect
       coverflow-alt-tab
-      dash-to-dock
+      dash2dock-lite
       desktop-cube
       desktop-icons-ng-ding
-      forge
+      # forge
+      freon
       places-status-indicator
+      removable-drive-menu
     ]);
+
+    xdg.desktopEntries.enpass = {
+      name = "Enpass";
+      exec = "env QT_QPA_PLATFORM=xcb QT_STYLE_OVERRIDE=fusion XDG_CURRENT_DESKTOP=KDE ${pkgs.enpass}/bin/Enpass %U";
+      icon = "enpass";
+      categories = [ "Utility" "Security" ];
+      mimeType = [ "x-scheme-handler/enpasscard" "x-scheme-handler/enpassauth" ];
+      settings = {
+        DBusActivatable = "false";
+      };
+    };
 
     # User specific programs
     programs.vscode = {
@@ -55,11 +68,18 @@
 
     # GNOME settings via dconf
     dconf.settings = {
+      # Desktop background
+      "org/gnome/desktop/background" = {
+        picture-uri = "file:///run/current-system/sw/share/backgrounds/gnome/adwaita-l.jxl";
+        picture-uri-dark = "file:///run/current-system/sw/share/backgrounds/gnome/adwaita-d.jxl";
+      };
       # Desktop interface
       "org/gnome/desktop/interface" = {
         color-scheme = "prefer-dark";
+        clock-show-weekday = true;        
         enable-hot-corners = true;
-        clock-show-weekday = true;
+        gtk-enable-primary-paste = true;
+        show-battery-percentage = true;
       };
       # Desktop window manager
       "org/gnome/desktop/wm/preferences" = {
@@ -67,33 +87,53 @@
       };
       # Extensions
       "org/gnome/shell" = {
+        always-show-log-out = true;
         enabled-extensions = map (ext: ext.extensionUuid) (with pkgs.gnomeExtensions; [
           appindicator
           blur-my-shell
           compiz-alike-magic-lamp-effect
           compiz-windows-effect
           coverflow-alt-tab
-          dash-to-dock
+          dash2dock-lite
           desktop-cube
           desktop-icons-ng-ding
-          forge
+          # forge
+          freon
           places-status-indicator
+          removable-drive-menu
         ]);
+        favorite-apps = [
+          "google-chrome.desktop"
+          "code.desktop"
+          "steam.desktop"
+          "org.gnome.Console.desktop"
+          "org.gnome.Nautilus.desktop"
+        ];
       };
       # Extension settings
       "org/gnome/shell/extensions/blur-my-shell/dash-to-dock" = {
         blur = true;
         brightness = 0.6;
         sigma = 30;
-        pipeline = "dynamic";
+        static-blur = false;
       };
-      "org/gnome/shell/extensions/dash-to-dock" = {
-        background-opacity = 0.0;
-        dash-max-icon-size = 32;
-        dock-fixed = false;
-        dock-position = "BOTTOM";
-        intellihide = true;
-        transparency-mode = "FIXED";
+      "org/gnome/shell/extensions/dash2dock-lite" = {
+        autohide-dash = true;
+        blur-background = true;
+        border-radius = 0.0;
+        dock-padding = 1.0;
+        edge-distance = 0.33;
+        icon-size = 0.15;
+        lamp-app-animation = true;
+        open-app-animation = true;
+        running-indicator-size = 1;
+        running-indicator-style = 7;
+      };
+      "org/gnome/shell/extensions/freon" = {
+        hot-sensors = [
+          "CPU"
+          "BAT0 Power"
+        ];
       };
       # Key bindings
       "org/gnome/settings-daemon/plugins/media-keys" = {
@@ -104,7 +144,7 @@
       "org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0" = {
         name = "Open terminal";
         command = "kgx";
-        binding = "<Super>t";
+        binding = "<Primary><Alt>t";
       };
     };
   };

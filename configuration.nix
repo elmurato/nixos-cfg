@@ -3,9 +3,7 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-      <home-manager/nixos>
+    [
       ./home-manager.nix
     ];
 
@@ -19,11 +17,21 @@
   nixpkgs.config.allowUnfree = true;
 
   # Bootloader
+  boot.consoleLogLevel = 0;
+  boot.initrd.verbose = false;
+  boot.kernelParams = [
+    "quiet"
+    "splash"
+  ]; 
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
+  boot.loader.timeout = 0;
+  boot.plymouth = {
+    enable = true;
+    theme = "bgrt";
+  };
 
   # Networking
-  networking.hostName = "nixos";
   networking.networkmanager.enable = true;
   # networking.proxy.default = "http://user:password@proxy:port/";
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
@@ -53,11 +61,16 @@
 
   # X11 windowing system
   services.xserver.enable = true;
-  # services.xserver.libinput.enable = true; # Enable touchpad support (enabled default in most desktopManager).
 
   # GNOME Desktop Environment
   services.displayManager.gdm.enable = true;
   services.desktopManager.gnome.enable = true;
+  services.udisks2.enable = true; # Enable storage information in GNOME
+
+  # List of GNOME packages to exclude
+  environment.gnome.excludePackages = with pkgs; [
+    epiphany
+  ];
 
   # Configure keymap in X11
   services.xserver.xkb = {
@@ -93,6 +106,7 @@
     description = "Murat";
     extraGroups = [
       "docker"
+      "input"
       "networkmanager"
       "vboxusers"
       "wheel"
@@ -105,12 +119,9 @@
     git
     htop
     nano
+    pciutils
+    usbutils
     wget
-  ];
-
-  # List of GNOME packages to exclude
-  environment.gnome.excludePackages = with pkgs; [
-    epiphany
   ];
 
   # List of system programs
@@ -123,7 +134,7 @@
 
   # List of services
   # services.openssh.enable = true;  # Enable the OpenSSH daemon.
-  services.flatpak.enable = true;
+  # services.flatpak.enable = true;
 
   # This value determines the NixOS release from which the default
   # settings for stateful data, like file locations and database versions
