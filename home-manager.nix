@@ -2,24 +2,8 @@
 { config, pkgs, ... }:
 
 {
-  home-manager.users.elmurato = { pkgs, ... }: {
-    home.stateVersion = config.system.stateVersion;
-    nixpkgs.config.allowUnfree = true;
-
-    # User specific packages
-    home.packages = (with pkgs; [
-      dconf-editor
-      enpass
-      gimp
-      gnome-system-monitor
-      gnome-tweaks
-      google-chrome
-      gparted
-      libreoffice-fresh
-      nextcloud-client
-      vlc
-    # User specific GNOME extensions
-    ]) ++ (with pkgs.gnomeExtensions; [
+  home-manager.users.elmurato = { pkgs, ... }: let
+    gnomeExtensionsList = with pkgs.gnomeExtensions; [
       appindicator
       blur-my-shell
       compiz-alike-magic-lamp-effect
@@ -28,11 +12,31 @@
       dash2dock-lite
       desktop-cube
       desktop-icons-ng-ding
-      # forge
       freon
       places-status-indicator
       removable-drive-menu
-    ]);
+    ];
+  in {
+    home.stateVersion = config.system.stateVersion;
+    nixpkgs.config.allowUnfree = true;
+
+    # User specific packages
+    home.packages = (with pkgs; [
+      dconf-editor
+      discord
+      enpass
+      gimp
+      gnome-system-monitor
+      gnome-tweaks
+      google-chrome
+      gparted
+      libreoffice-fresh
+      nextcloud-client
+      prismlauncher # Alternative Minecraft launcher
+      spotify
+      vlc
+    # User specific GNOME extensions
+    ]) ++ gnomeExtensionsList;
 
     xdg.desktopEntries.enpass = {
       name = "Enpass";
@@ -88,22 +92,11 @@
       # Extensions
       "org/gnome/shell" = {
         always-show-log-out = true;
-        enabled-extensions = map (ext: ext.extensionUuid) (with pkgs.gnomeExtensions; [
-          appindicator
-          blur-my-shell
-          compiz-alike-magic-lamp-effect
-          compiz-windows-effect
-          coverflow-alt-tab
-          dash2dock-lite
-          desktop-cube
-          desktop-icons-ng-ding
-          # forge
-          freon
-          places-status-indicator
-          removable-drive-menu
-        ]);
+        enabled-extensions = map (ext: ext.extensionUuid) gnomeExtensionsList;
         favorite-apps = [
           "google-chrome.desktop"
+          "spotify.desktop"
+          "discord.desktop"
           "code.desktop"
           "steam.desktop"
           "org.gnome.Console.desktop"
@@ -130,10 +123,7 @@
         running-indicator-style = 7;
       };
       "org/gnome/shell/extensions/freon" = {
-        hot-sensors = [
-          "CPU"
-          "BAT0 Power"
-        ];
+        hot-sensors = [ "CPU" ];
       };
       # Key bindings
       "org/gnome/settings-daemon/plugins/media-keys" = {
