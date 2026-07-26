@@ -7,6 +7,7 @@
   ];
 
   environment.systemPackages = with pkgs; [
+    displaylink # For HDMI via HP USB-C Dock G2
     nvme-cli # For reading NVMe SSD temperature in Freon
   ];
 
@@ -19,4 +20,5 @@
   services.fwupd.enable = true; # Enable BIOS and firmware updates via GNOME software center
   services.thermald.enable = true; # Intel CPU throttling fix
   services.fprintd.enable = true; # Enable fingerprint reader
+  services.xserver.videoDrivers = [ "displaylink" "modesetting" ];
 }
