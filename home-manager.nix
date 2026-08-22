@@ -17,59 +17,50 @@
       removable-drive-menu
     ];
   in {
-    home.stateVersion = config.system.stateVersion;
     nixpkgs.config.allowUnfree = true;
-
-    # User specific packages
-    home.packages = (with pkgs; [
-      dconf-editor
-      discord
-      enpass
-      gimp
-      gnome-system-monitor
-      gnome-tweaks
-      google-chrome
-      gparted
-      libreoffice-fresh
-      nextcloud-client
-      prismlauncher # Alternative Minecraft launcher
-      spotify
-      vlc
-    # User specific GNOME extensions
-    ]) ++ gnomeExtensionsList;
-
-    xdg.desktopEntries.enpass = {
-      name = "Enpass";
-      exec = "env QT_QPA_PLATFORM=xcb QT_STYLE_OVERRIDE=fusion XDG_CURRENT_DESKTOP=KDE ${pkgs.enpass}/bin/Enpass %U";
-      icon = "enpass";
-      categories = [ "Utility" "Security" ];
-      mimeType = [ "x-scheme-handler/enpasscard" "x-scheme-handler/enpassauth" ];
-      settings = {
-        DBusActivatable = "false";
-      };
+    home = {
+      stateVersion = config.system.stateVersion;
+      # User specific packages
+      packages = (with pkgs; [
+        bitwarden-desktop
+        dconf-editor
+        discord
+        gimp
+        gnome-system-monitor
+        gnome-tweaks
+        google-chrome
+        gparted
+        libreoffice-fresh
+        nextcloud-client
+        prismlauncher # Alternative Minecraft launcher
+        spotify
+        vlc
+      ]) ++ gnomeExtensionsList; # User specific GNOME extensions
     };
 
     # User specific programs
-    programs.vscode = {
-      enable = true;
-      package = pkgs.vscode.fhs;
-      profiles.default.extensions = with pkgs.vscode-extensions; [
-	continue.continue
-        ms-vscode.cpptools         
-        ms-vscode-remote.remote-containers
-        eamodio.gitlens 
-        jnoortheen.nix-ide
-      ];
-    };
+    programs = {
+      vscode = {
+        enable = true;
+        package = pkgs.vscode.fhs;
+        profiles.default.extensions = with pkgs.vscode-extensions; [
+          continue.continue
+            ms-vscode.cpptools         
+          ms-vscode-remote.remote-containers
+          eamodio.gitlens 
+          jnoortheen.nix-ide
+        ];
+      };
 
-    programs.git = {
-      enable = true;
-      settings.user = {
-        name = "elmurato";
-        email = "1382097+elmurato@users.noreply.github.com";
+      git = {
+        enable = true;
+        settings.user = {
+          name = "elmurato";
+          email = "1382097+elmurato@users.noreply.github.com";
+        };
       };
     };
-
+    
     # GNOME settings via dconf
     dconf.settings = {
       # Desktop background
