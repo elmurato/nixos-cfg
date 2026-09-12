@@ -6,15 +6,18 @@
     gnomeExtensionsList = with pkgs.gnomeExtensions; [
       appindicator
       blur-my-shell
+      burn-my-windows
       compiz-alike-magic-lamp-effect
       compiz-windows-effect
       coverflow-alt-tab
-      dash2dock-lite
+      #dash2dock-lite
+      dash-to-dock
       desktop-cube
       desktop-icons-ng-ding
       freon
       places-status-indicator
       removable-drive-menu
+      tiling-assistant
     ];
   in {
     nixpkgs.config.allowUnfree = true;
@@ -95,11 +98,31 @@
         ];
       };
       # Extension settings
+      "org/gnome/shell/extensions/burn-my-windows" = {
+        active-profile = "'/home/elmurato/.config/burn-my-windows/profiles/default.conf'";
+      };
       "org/gnome/shell/extensions/blur-my-shell/dash-to-dock" = {
         blur = true;
         brightness = 0.6;
+	      override-background = true;
         sigma = 30;
         static-blur = false;
+	      style-dash-to-dock = 0;
+      };
+      "org/gnome/shell/extensions/dash-to-dock" = {
+        animate-show-apps = true;
+        # background-opacity = 0.8;
+        dash-max-icon-size = 32;
+	      disable-overview-on-startup = true;
+        dock-fixed = false;
+	      dock-position = "BOTTOM";
+        extend-height = false;
+        height-fraction = 0.90;
+        intellihide = true;
+        intellihide-mode = "FOCUS-APPLICATION-WINDOWS";
+	      # max-alpha = 0.80;
+        running-indicator-style = "DOTS";
+        transparency-mode = "DEFAULT";
       };
       "org/gnome/shell/extensions/dash2dock-lite" = {
         autohide-dash = true;
@@ -128,5 +151,34 @@
         binding = "<Primary><Alt>t";
       };
     };
+    xdg.configFile."burn-my-windows/profiles/default.conf".text = ''
+      [burn-my-windows-profile]
+      fire-enable-effect=false
+      broken-glass-enable-effect=false
+      doom-enable-effect=false
+      apparition-enable-effect=false
+      aura-glow-enable-effect=false
+      energize-a-enable-effect=false
+      energize-b-enable-effect=false
+      focus-enable-effect=false
+      glide-enable-effect=false
+      glitch-enable-effect=false
+      hexagon-enable-effect=false
+      incinerate-enable-effect=false
+      matrix-enable-effect=false
+      mushroom-enable-effect=false
+      paint-brush-enable-effect=false
+      pixelate-enable-effect=false
+      pixel-wheel-enable-effect=false
+      pixel-wipe-enable-effect=false
+      portal-enable-effect=false
+      rgbwarp-enable-effect=false
+      snap-enable-effect=false
+      team-rocket-enable-effect=false
+      trex-enable-effect=false
+      tv-enable-effect=true
+      tv-glitch-enable-effect=false
+      wisps-enable-effect=false
+    '';
   };
 }

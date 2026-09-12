@@ -74,6 +74,7 @@
     # GNOME Desktop Environment
     displayManager.gdm.enable = true;
     desktopManager.gnome.enable = true;
+    gnome.gcr-ssh-agent.enable = true;
     udisks2.enable = true; # Enable storage information in GNOME
 
     # flatpak.enable = true;
@@ -138,6 +139,7 @@
       dmidecode
       git
       htop
+      killall
       nano
       pciutils
       usbutils
