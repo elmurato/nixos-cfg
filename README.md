@@ -14,6 +14,29 @@ The goal of this repository is to provide a fully reproducible and declarative e
 3.  **Version Control**: Changes are tracked via Git, allowing for easy rollback to previous stable states and meticulous auditing of system modifications.
 4.  **Multi Hardware Support**: One central configuration, which supports multiple computers and notebooks.
 
+## 🖥️ Desktop Environment
+
+I'm using a macOS-like GNOME with good old Compiz animations/effects, all configured declaratively.
+
+**Main extensions:**
+
+- **Dock:** 
+  - Blur my Shell
+  - Dash to Dock
+- **Classic Compiz effects:**
+  - Burn My Windows
+  - Coverflow Alt-Tab
+  - Compiz alike Magic Lamp Effect
+  - Compiz Windows Effect
+  - Desktop Cube
+- **Workflow and system tools:** 
+  - AppIndicator
+  - Desktop Icons NG (DING)
+  - Freon
+  - Places Status Indicator
+  - Removable Drive Menu
+  - Tiling Assistant
+
 ## ⚙️ Getting Started
 
 To deploy this configuration onto a NixOS machine, follow these general steps:
@@ -61,26 +84,34 @@ To deploy this configuration onto a NixOS machine, follow these general steps:
 
 ```
 nixos-cfg/
-├── configuration.nix
-├── flake.nix
-├── flake.lock
-├── home-manager.nix
+├── LICENSE
+├── README.md
+├── assets/
+│   └── wallpapers/
+│       └── RDSTR.jpg
+├── configuration.nix        # Shared system configuration
+├── flake.nix                # Flake outputs and host definitions
+├── flake.lock               # Locked flake inputs
+├── home-manager.nix         # User environment and GNOME settings
 └── hosts/
     ├── thinkpad-p14s-gen2i/
-    │   ├── default.nix
+    │   ├── default.nix      # ThinkPad host configuration
     │   └── hardware-configuration.nix
     └── nixos-vm/
-        ├── default.nix
+        ├── default.nix      # VM host configuration
         └── hardware-configuration.nix
 ```
 
 | File / Directory | Description |
 | :--- | :--- |
-| `configuration.nix` | Primary system configuration. Defines global OS settings: networking, user accounts, installed packages, kernel options, and services. Main entry point for `nixos-rebuild`. |
-| `flake.nix` | Flakes entry point. Declares all external inputs (e.g., `nixpkgs`, `home-manager`) and exposes the NixOS configurations for each host as outputs. Replaces the traditional `nix-channel` approach. |
-| `flake.lock` | Auto-generated lock file that pins every flake input to an exact git revision, guaranteeing fully reproducible builds across machines and time. Do not edit manually. |
-| `home-manager.nix` | User-specific configuration. Manages shell settings (Oh My Zsh, aliases), user-scoped applications, desktop customizations (GTK themes, terminal emulator), and dotfiles. |
-| `hosts/thinkpad-p14s-gen2i/default.nix` | Hardware-specific customizations for the ThinkPad P14s Gen2i. |
-| `hosts/thinkpad-p14s-gen2i/hardware-configuration.nix` | Auto-generated hardware configuration for the ThinkPad P14s Gen2i. |
-| `hosts/nixos-vm/default.nix` | Hardware-specific customizations for the VM. |
-| `hosts/nixos-vm/hardware-configuration.nix` | Auto-generated hardware configuration for the VM. |
+| `LICENSE` | Repository license. |
+| `README.md` | Setup instructions and repository documentation. |
+| `assets/wallpapers/RDSTR.jpg` | Wallpaper configured by Home Manager for the GNOME desktop. |
+| `configuration.nix` | Shared system settings, including networking, users, packages, boot options, and services. Each host imports this module. |
+| `flake.nix` | Declares external inputs and exposes a NixOS configuration for each host. This is the entry point used by `nixos-rebuild --flake`. |
+| `flake.lock` | Auto-generated lock file that pins each flake input to an exact revision for reproducible builds. Do not edit manually. |
+| `home-manager.nix` | User environment configuration for packages, shell settings, VS Code, GNOME settings, and dotfiles. It is imported by `configuration.nix`. |
+| `hosts/thinkpad-p14s-gen2i/default.nix` | ThinkPad host module. Imports the generated hardware configuration and shared system configuration, then adds host-specific settings. |
+| `hosts/thinkpad-p14s-gen2i/hardware-configuration.nix` | Generated hardware configuration for the ThinkPad P14s Gen2i. |
+| `hosts/nixos-vm/default.nix` | VM host module. Imports the generated hardware configuration and shared system configuration, then sets the host name. |
+| `hosts/nixos-vm/hardware-configuration.nix` | Generated hardware configuration for the VM. |
