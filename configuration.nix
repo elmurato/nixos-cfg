@@ -151,6 +151,10 @@
   # List of system programs
   programs = {
     nix-ld.enable = true; # For VSCode
+    ssh = {
+      startAgent = false;
+      askPassword = "";
+    };
     steam.enable = true;
   };
 
