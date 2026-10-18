@@ -120,6 +120,7 @@
     isNormalUser = true;
     description = "Murat";
     extraGroups = [
+      "dialout"
       "docker"
       "input"
       "networkmanager"

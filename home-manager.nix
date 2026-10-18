@@ -68,11 +68,13 @@
     dconf.settings = {
       # Desktop background
       "org/gnome/desktop/background" = {
-        picture-uri = "file:///run/current-system/sw/share/backgrounds/gnome/adwaita-l.jxl";
-        picture-uri-dark = "file:///run/current-system/sw/share/backgrounds/gnome/adwaita-d.jxl";
+        picture-uri = "./assets/wallpapers/RDSTR.jpg";
+        picture-uri-dark = "./assets/wallpapers/RDSTR.jpg";
+        picture-options = "zoom";
       };
       # Desktop interface
       "org/gnome/desktop/interface" = {
+        accent-color = "red";  # Options: "blue", "teal", "green", "yellow", "orange", "red", "pink", "purple", "slate"
         color-scheme = "prefer-dark";
         clock-show-weekday = true;        
         enable-hot-corners = true;
@@ -179,6 +181,7 @@
       tv-enable-effect=true
       tv-glitch-enable-effect=false
       wisps-enable-effect=false
+      tv-animation-time=500
     '';
   };
 }
