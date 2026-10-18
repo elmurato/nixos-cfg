@@ -68,8 +68,8 @@
     dconf.settings = {
       # Desktop background
       "org/gnome/desktop/background" = {
-        picture-uri = "./assets/wallpapers/RDSTR.jpg";
-        picture-uri-dark = "./assets/wallpapers/RDSTR.jpg";
+        picture-uri = "file://${./assets/wallpapers/RDSTR.jpg}";
+        picture-uri-dark = "file://${./assets/wallpapers/RDSTR.jpg}";
         picture-options = "zoom";
       };
       # Desktop interface
