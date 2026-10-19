@@ -155,7 +155,14 @@
       startAgent = false;
       askPassword = "";
     };
-    steam.enable = true;
+    steam = {
+      enable = true;
+      package = pkgs.steam.override {
+        extraProfile = ''
+          export XCURSOR_PATH="${pkgs.adwaita-icon-theme}/share/icons''${XCURSOR_PATH:+:$XCURSOR_PATH}"
+        '';
+      };
+    };
   };
 
   virtualisation.docker = {
