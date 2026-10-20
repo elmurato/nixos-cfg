@@ -17,8 +17,9 @@
 
   networking.hostName = "thinkpad-p14s-gen2i";
   
-  services.fwupd.enable = true; # Enable BIOS and firmware updates via GNOME software center
-  services.thermald.enable = true; # Intel CPU throttling fix
   services.fprintd.enable = true; # Enable fingerprint reader
-  services.xserver.videoDrivers = [ "displaylink" "modesetting" ];
+  services.fwupd.enable = true; # Enable BIOS and firmware updates via GNOME software center
+  services.switcherooControl.enable = true; # GPU selection helper
+  services.thermald.enable = true; # Intel CPU throttling fix
+  services.xserver.videoDrivers = [ "nvidia" "displaylink" "modesetting" ];
 }

@@ -10,14 +10,13 @@
       compiz-alike-magic-lamp-effect
       compiz-windows-effect
       coverflow-alt-tab
-      #dash2dock-lite
       dash-to-dock
       desktop-cube
       desktop-icons-ng-ding
       freon
       places-status-indicator
       removable-drive-menu
-      tiling-assistant
+      tiling-shell
     ];
   in {
     nixpkgs.config.allowUnfree = true;
@@ -92,13 +91,12 @@
     
     # GNOME settings via dconf
     dconf.settings = {
-      # Desktop background
+      # GNOME desktop
       "org/gnome/desktop/background" = {
         picture-uri = "file://${./assets/wallpapers/RDSTR.jpg}";
         picture-uri-dark = "file://${./assets/wallpapers/RDSTR.jpg}";
         picture-options = "zoom";
       };
-      # Desktop interface
       "org/gnome/desktop/interface" = {
         accent-color = "red";  # Options: "blue", "teal", "green", "yellow", "orange", "red", "pink", "purple", "slate"
         color-scheme = "prefer-dark";
@@ -107,11 +105,19 @@
         gtk-enable-primary-paste = true;
         show-battery-percentage = true;
       };
-      # Desktop window manager
+      "org/gnome/desktop/wm/keybindings" = {
+        # Löscht die nativen GNOME-Verknüpfungen für linkes/rechtes Kacheln
+        toggle-tiled-left = [];
+        toggle-tiled-right = [];
+      };
       "org/gnome/desktop/wm/preferences" = {
         button-layout = ":minimize,maximize,close";
       };
-      # Extensions
+      "org/gnome/mutter/keybindings" = {
+        toggle-tiled-left = [];
+        toggle-tiled-right = [];
+      };
+      # GNOME extensions
       "org/gnome/shell" = {
         always-show-log-out = true;
         enabled-extensions = map (ext: ext.extensionUuid) gnomeExtensionsList;
@@ -125,9 +131,22 @@
           "org.gnome.Nautilus.desktop"
         ];
       };
-      # Extension settings
+      # GNOME extension settings
       "org/gnome/shell/extensions/burn-my-windows" = {
         active-profile = "'/home/elmurato/.config/burn-my-windows/profiles/default.conf'";
+      };
+      "org/gnome/shell/extensions/blur-my-shell/applications" = {
+        blur = true;
+        blur-on-focused = false;
+        blur-on-overview = false;
+        brightness = 1.0;
+        dynamic-opacity = true;
+        enable = true;
+        enable-all = true;
+        opacity = 175;
+        pipeline = "pipeline_default";
+        sigma = 30;
+        static-blur = false;
       };
       "org/gnome/shell/extensions/blur-my-shell/dash-to-dock" = {
         blur = true;
@@ -139,7 +158,6 @@
       };
       "org/gnome/shell/extensions/dash-to-dock" = {
         animate-show-apps = true;
-        # background-opacity = 0.8;
         dash-max-icon-size = 32;
 	      disable-overview-on-startup = true;
         dock-fixed = false;
@@ -152,20 +170,27 @@
         running-indicator-style = "DOTS";
         transparency-mode = "DEFAULT";
       };
-      "org/gnome/shell/extensions/dash2dock-lite" = {
-        autohide-dash = true;
-        blur-background = true;
-        border-radius = 0.0;
-        dock-padding = 1.0;
-        edge-distance = 0.33;
-        icon-size = 0.15;
-        lamp-app-animation = true;
-        open-app-animation = true;
-        running-indicator-size = 1;
-        running-indicator-style = 7;
-      };
       "org/gnome/shell/extensions/freon" = {
         hot-sensors = [ "CPU" ];
+      };
+      "org/gnome/shell/extensions/tiling-assistant" = {
+        movement-cycle-behavior = 1; # 1 means 'Static'
+      };
+      "org/gnome/shell/extensions/tilingshell/keybindings" = {
+        enable-autotiling = true; 
+        enable-auto-resize = true; 
+        enable-gaps = true;
+        inner-gaps = 12;
+        move-window-left = [ "<Super>Left" ];
+        move-window-right = [ "<Super>Right" ];
+        move-window-up = [ "<Super>Up" ];
+        move-window-down = [ "<Super>Down" ];
+        outer-gaps = 12;    
+        snap-window-left = [ "<Super>Left" ];
+        snap-window-right = [ "<Super>Right" ];
+        snap-window-topleft = [ "<Super><Shift>Left" ];
+        snap-window-topright = [ "<Super><Shift>Right" ];
+        tweak-window-shadows = true; 
       };
       # Key bindings
       "org/gnome/settings-daemon/plugins/media-keys" = {
