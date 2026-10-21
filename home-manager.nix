@@ -135,6 +135,9 @@
       "org/gnome/shell/extensions/burn-my-windows" = {
         active-profile = "'/home/elmurato/.config/burn-my-windows/profiles/default.conf'";
       };
+      "org/gnome/shell/extensions/blur-my-shell/appfolder" = {
+        blur = false;
+      };
       "org/gnome/shell/extensions/blur-my-shell/applications" = {
         blur = true;
         blur-on-focused = false;
@@ -155,6 +158,9 @@
         sigma = 30;
         static-blur = false;
 	      style-dash-to-dock = 0;
+      };
+      "org/gnome/shell/extensions/blur-my-shell/overview" = {
+        blur = false;
       };
       "org/gnome/shell/extensions/dash-to-dock" = {
         animate-show-apps = true;
