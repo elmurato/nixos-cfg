@@ -1,11 +1,36 @@
 # /etc/nixos/configuration.nix
-{ config, pkgs, ... }:
+{ config, lib, pkgs, plasma-manager, ... }:
 
+let
+  desktopEnvironment = "kde";
+in
+assert builtins.elem desktopEnvironment [ "gnome" "kde" ];
 {
   imports =
     [
       ./home-manager.nix
-    ];
+    ] ++ lib.optional (desktopEnvironment == "gnome") ./home-manager-gnome.nix
+      ++ lib.optional (desktopEnvironment == "kde") ./home-manager-kde.nix;
+
+  home-manager.sharedModules = lib.optional (desktopEnvironment == "kde")
+    plasma-manager.homeModules.plasma-manager;
+
+  xdg.portal.config =
+    if desktopEnvironment == "kde" then {
+      kde.default = [ "kde" "gtk" ];
+    } else {
+      gnome.default = [ "gnome" "gtk" ];
+    };
+
+  # Disable fprintd in plasma login manager (broken)
+  security.pam.services = lib.optionalAttrs (desktopEnvironment == "kde") {
+    plasmalogin.rules.auth.login.modulePath = lib.mkForce "plasma-login-no-fprint";
+    "plasma-login-no-fprint" = {
+      useDefaultRules = true;
+      fprintAuth = false;
+      kwallet.enable = true;
+    };
+  };
 
   # Nix settings
   nix = {
@@ -71,11 +96,14 @@
 
   # List of services
   services = {
-    # GNOME Desktop Environment
-    displayManager.gdm.enable = true;
-    desktopManager.gnome.enable = true;
-    gnome.gcr-ssh-agent.enable = true;
-    udisks2.enable = true; # Enable storage information in GNOME
+    # Desktop environment
+    displayManager.gdm.enable = desktopEnvironment == "gnome";
+    desktopManager.gnome.enable = desktopEnvironment == "gnome";
+    fwupd.enable = true; # Enable BIOS and firmware updates
+    gnome.gcr-ssh-agent.enable = desktopEnvironment == "gnome";
+    displayManager.plasma-login-manager.enable = desktopEnvironment == "kde";
+    desktopManager.plasma6.enable = desktopEnvironment == "kde";
+    udisks2.enable = true; # Enable storage information
 
     # flatpak.enable = true;
     # openssh.enable = true;  # Enable the OpenSSH daemon.
@@ -131,9 +159,9 @@
   
   environment = {
     # List of GNOME packages to exclude
-    gnome.excludePackages = with pkgs; [
+    gnome.excludePackages = lib.optionals (desktopEnvironment == "gnome") (with pkgs; [
       epiphany
-    ];
+    ]);
     # List packages installed in system profile. To search, run:
     # $ nix search wget
     systemPackages = with pkgs; [
@@ -141,6 +169,7 @@
       git
       htop
       killall
+      mesa-demos
       nano
       pciutils
       usbutils
@@ -152,8 +181,11 @@
   programs = {
     nix-ld.enable = true; # For VSCode
     ssh = {
-      startAgent = false;
-      askPassword = "";
+      startAgent = desktopEnvironment == "kde";
+      askPassword = if desktopEnvironment == "kde" then "${pkgs.kdePackages.ksshaskpass}/bin/ksshaskpass" else "";
+      extraConfig = ''
+        AddKeysToAgent yes # TODO: Remvoe for GNOME?
+      '';
     };
     steam = {
       enable = true;
