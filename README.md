@@ -16,7 +16,11 @@ The goal of this repository is to provide a fully reproducible and declarative e
 
 ## 🖥️ Desktop Environment
 
-I'm using a macOS-like GNOME with good old Compiz animations/effects, all configured declaratively.
+The desired desktop style is macOS-inspired: a clean, dock-centered workflow with polished classic desktop effects, complemented by virtual desktops and window tiling. Both GNOME and KDE Plasma are configured to provide this experience. Select the desktop environment by setting `desktopEnvironment` in `configuration.nix`.
+
+### GNOME
+
+GNOME uses extensions to create a dock-centered workflow and add classic Compiz-inspired effects:
 
 **Main extensions:**
 
@@ -36,6 +40,10 @@ I'm using a macOS-like GNOME with good old Compiz animations/effects, all config
   - Places Status Indicator
   - Removable Drive Menu
   - Tiling Assistant
+
+### KDE Plasma
+
+KDE Plasma achieves the same style with a dark Breeze theme, floating top and bottom panels, and a custom KWin tiling layout. KWin also provides classic effects such as the desktop cube, magic lamp, and wobbly windows, with shortcuts for virtual desktops and window management.
 
 ## ⚙️ Getting Started
 
@@ -92,7 +100,9 @@ nixos-cfg/
 ├── configuration.nix        # Shared system configuration
 ├── flake.nix                # Flake outputs and host definitions
 ├── flake.lock               # Locked flake inputs
-├── home-manager.nix         # User environment and GNOME settings
+├── home-manager.nix         # Shared user environment
+├── home-manager-gnome.nix   # GNOME settings and extensions
+├── home-manager-kde.nix     # KDE Plasma settings
 └── hosts/
     ├── thinkpad-p14s-gen2i/
     │   ├── default.nix      # ThinkPad host configuration
@@ -106,11 +116,13 @@ nixos-cfg/
 | :--- | :--- |
 | `LICENSE` | Repository license. |
 | `README.md` | Setup instructions and repository documentation. |
-| `assets/wallpapers/RDSTR.jpg` | Wallpaper configured by Home Manager for the GNOME desktop. |
+| `assets/wallpapers/RDSTR.jpg` | Wallpaper configured by Home Manager for the desktop environments. |
 | `configuration.nix` | Shared system settings, including networking, users, packages, boot options, and services. Each host imports this module. |
 | `flake.nix` | Declares external inputs and exposes a NixOS configuration for each host. This is the entry point used by `nixos-rebuild --flake`. |
 | `flake.lock` | Auto-generated lock file that pins each flake input to an exact revision for reproducible builds. Do not edit manually. |
-| `home-manager.nix` | User environment configuration for packages, shell settings, VS Code, GNOME settings, and dotfiles. It is imported by `configuration.nix`. |
+| `home-manager.nix` | Shared user environment configuration for packages, shell settings, VS Code, and dotfiles. It is imported by `configuration.nix`. |
+| `home-manager-gnome.nix` | GNOME desktop configuration and extensions. |
+| `home-manager-kde.nix` | KDE Plasma desktop configuration. |
 | `hosts/thinkpad-p14s-gen2i/default.nix` | ThinkPad host module. Imports the generated hardware configuration and shared system configuration, then adds host-specific settings. |
 | `hosts/thinkpad-p14s-gen2i/hardware-configuration.nix` | Generated hardware configuration for the ThinkPad P14s Gen2i. |
 | `hosts/nixos-vm/default.nix` | VM host module. Imports the generated hardware configuration and shared system configuration, then sets the host name. |
