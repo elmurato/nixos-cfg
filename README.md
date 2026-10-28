@@ -16,11 +16,11 @@ The goal of this repository is to provide a fully reproducible and declarative e
 
 ## 🖥️ Desktop Environment
 
-The repository includes declarative configurations for both GNOME and KDE Plasma. Select the desktop environment by setting `desktopEnvironment` in `configuration.nix`.
+The desired desktop style is macOS-inspired: a clean, dock-centered workflow with polished classic desktop effects, complemented by virtual desktops and window tiling. Both GNOME and KDE Plasma are configured to provide this experience. Select the desktop environment by setting `desktopEnvironment` in `configuration.nix`.
 
 ### GNOME
 
-I'm using a macOS-like GNOME with good old Compiz animations/effects.
+GNOME uses extensions to create a dock-centered workflow and add classic Compiz-inspired effects:
 
 **Main extensions:**
 
@@ -43,7 +43,7 @@ I'm using a macOS-like GNOME with good old Compiz animations/effects.
 
 ### KDE Plasma
 
-The KDE configuration uses a dark Breeze theme, floating top and bottom panels, and a custom KWin tiling layout. It also enables classic desktop effects such as the desktop cube, magic lamp, and wobbly windows, with shortcuts for virtual desktops and window management.
+KDE Plasma achieves the same style with a dark Breeze theme, floating top and bottom panels, and a custom KWin tiling layout. KWin also provides classic effects such as the desktop cube, magic lamp, and wobbly windows, with shortcuts for virtual desktops and window management.
 
 ## ⚙️ Getting Started
 
